@@ -42,6 +42,8 @@ COLLABORATIVE_RS_DATABASE=recommender
 COLLABORATIVE_RS_USERNAME=dev
 COLLABORATIVE_RS_PASSWORD=dev
 
-# The private sdn key for sentry which we use for error logging
+# Secrets
+ACCESS_TOKEN=abcdefg...
 SENTRY_SDN=https://389434adfhsf...
+CRONITOR_API_KEY=1414141adad...
 ```
