@@ -42,13 +42,15 @@ class MostRecommendedWithPIDs(BaseModel):
 class RequestRecommendationsAlongYourServicesWithPIDs(BaseModel):
     provider_id: str
     service_id: Optional[str] = None
-    top_n: Optional[int] = 5
+    top_services_numb: Optional[int] = 5
+    top_competitors_numb: Optional[int] = 5
 
 
 class RequestRecommendationsAlongYourServices(BaseModel):
     provider_id: int
     service_id: Optional[int] = None
-    top_n: Optional[int] = 5
+    top_services_numb: Optional[int] = 5
+    top_competitors_numb: Optional[int] = 5
 
 
 class CompetitorRecommendationsWithPIDs(BaseModel):
@@ -113,7 +115,8 @@ class PidMapper:
         return RequestRecommendationsAlongYourServices(
             provider_id=self._provider_pid_to_id(request.provider_id),
             service_id=self._service_pid_to_id(request.service_id) if request.service_id is not None else None,
-            top_n=request.top_n
+            top_services_numb=request.top_services_numb,
+            top_competitors_numb=request.top_competitors_numb
         )
 
     def transform_competitors_for_service(self, competitors) \

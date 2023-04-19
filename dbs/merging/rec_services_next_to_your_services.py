@@ -4,7 +4,8 @@ from dbs.content_based_rs.processing import \
 MOST_RECOMMENDED_ALONG_YOUR_SERVICES_STATISTICS_GETTERS = [find_services_recommended_next_to_your_service]
 
 
-def get_services_recommended_next_to_your_service_from_all_dbs(provider_id, service_id, top_n):
+def get_services_recommended_next_to_your_service_from_all_dbs(provider_id, service_id,
+                                                               top_services_numb, top_competitors_numb):
     recs_per_service = [get_recommended_along_your_service(provider_id, service_id)
                         for get_recommended_along_your_service in
                         MOST_RECOMMENDED_ALONG_YOUR_SERVICES_STATISTICS_GETTERS]
@@ -17,7 +18,7 @@ def get_services_recommended_next_to_your_service_from_all_dbs(provider_id, serv
             "total_competitor_recommendations": recs['recommendations_count'],
             "competitors": [
                 {"service_id": service_id, "recommendations": recommendations}
-                for service_id, recommendations in recs['services'].items()]
+                for service_id, recommendations in list(recs['services'].items())[:top_competitors_numb]]
         }
         for service_id, recs in recs_per_service.items()
     ]
@@ -26,4 +27,4 @@ def get_services_recommended_next_to_your_service_from_all_dbs(provider_id, serv
                                    key=lambda x: x['total_competitor_recommendations'],
                                    reverse=True)
 
-    return recs_per_service_list[:top_n]
+    return recs_per_service_list[:top_services_numb]
