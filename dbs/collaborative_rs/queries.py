@@ -92,7 +92,7 @@ class CollaborativeRSMongo:
         if ret_val is None:
             raise IdNotFound(f"Could not find the service id {service_id}.")
 
-        return ret_val['_id']
+        return ret_val['pid']
 
     def get_number_of_recommendations_daily(self, service_ids):
         result = self.mongo_connector.get_db()["recommendation"].aggregate([
