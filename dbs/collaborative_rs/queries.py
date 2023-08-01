@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timezone
 from typing import Optional
 
 from dbs.connector import MongoDbConnector, form_mongo_url
@@ -150,12 +151,33 @@ class CollaborativeRSMongo:
                 }
             }
         ])
+        res = [[recommendations_per_service['_id'], recommendations_per_service['count']]
+               for recommendations_per_service in result]
 
-        return [(recommendations_per_service['_id'], recommendations_per_service['count'])
-                for recommendations_per_service in result]
+        # Having to manually remove the outlier date of 6/4/2022
+        for rec_per_day in res:
+            if rec_per_day[0] == {'day': 6, 'month': 4, 'year': 2022}:
+                rec_per_day[1] = 0
+
+        return res
 
     def get_most_recommended(self, service_ids):
         result = self.mongo_connector.get_db()["recommendation"].aggregate([
+            {
+                '$match': {
+                    '$or': [
+                        {
+                            'timestamp': {
+                                '$gte': datetime(2022, 4, 7, 0, 0, 0, tzinfo=timezone.utc)
+                            }
+                        }, {
+                            'timestamp': {
+                                '$lt': datetime(2022, 4, 6, 0, 0, 0, tzinfo=timezone.utc)
+                            }
+                        }
+                    ]
+                }
+            },
             {
                 '$match': {
                     'services': {
