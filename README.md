@@ -2,10 +2,6 @@
 
 Component calculating statistics about the performance that services have on the RS of the marketplace.
 
-## Warning
-
-Until provider PIDs are added in the RS Mongo only the `health` API call will be able to run.
-
 ## Building and Running
 
 Prerequisites:
