@@ -4,55 +4,67 @@
 
 ## Introduction
 
-- Purpose of the document and intended audience.
-- Importance of proper configuration for the software/application.
+The provider insights application uses both configuration files and environment variables to control its behaviour. We provide a detailed description of the configuration process below.
 
 ## Configuration Overview
 
-- Brief overview of the configuration process.
-- Explanation of how configuration affects the behaviour of the software.
+The bare minimum configuration needed is creating the `.env` file in the root directory of the project. This file contains the environment variables needed to run the application.
+
+One can then change the configuration file found in `config/backend-prod.yaml` that has variables controlling fastapi settings and application version.
+
+- `.env`: Must be created, should never be committed to the repository.
+- `config/backend-prod.yaml`: Optional, only controls fastapi settings and application version.
 
 ## Configuration Files
 
-- List of configuration files used by the software.
-- Description of each file's purpose and contents.
+The configuration file (`config/backend-prod.yaml`) controls:
 
-## Configuration Parameters
+- `fastapi` configuration (workers, host, port, etc.)
+- version of the application
 
-- Detailed explanation of individual configuration parameters.
-- Default values and allowed ranges or formats.
-- Impact of changing specific parameters on the software.
+We provide a detailed example of the configuration file below:
+
+```yaml
+VERSION_NAME: "v1" # Should be changed to differentiate between different versions of the model. It is used in logging and monitoring
+
+FASTAPI:  # Fastapi configuration
+  WORKERS: 4
+  DEBUG: False
+  RELOAD: False
+  HOST: '0.0.0.0'
+  PORT: 4558
+
+```
 
 ## Environmental Variables
 
-- Description of environment variables used for configuration.
-- Explanation of how these variables influence the software.
+The environmental variables control integration with other services and databases. The `.env` file should be created in the root directory of the project and should contain the following variables:
 
-## Configuration Sources
+```bash
+# Mongo from the Athena recommender
+CONTENT_BASED_RS_MONGO_HOST=localhost
+CONTENT_BASED_RS_MONGO_PORT=27017
+CONTENT_BASED_RS_MONGO_DATABASE=database_name
+CONTENT_BASED_RS_MONGO_USERNAME=admin
+CONTENT_BASED_RS_MONGO_PASSWORD=admin
 
-- Explanation of where configuration values are sourced from (e.g., files, environment).
-- Order of precedence if configuration values conflict.
+# Mongo from the Cyfronet team
+COLLABORATIVE_RS_HOST=localhost
+COLLABORATIVE_RS_PORT=27017
+COLLABORATIVE_RS_DATABASE=database_name
+COLLABORATIVE_RS_USERNAME=admin
+COLLABORATIVE_RS_PASSWORD=admin
 
-## Configuration Management
+# API Authentication token (needed by anyone attempting to access the API)
+ACCESS_TOKEN=29yv1E2gD2j83W2x
 
-- Best practices for managing configuration files and values.
-- Recommendations for versioning and documenting changes.
+# Monitoring services
+SENTRY_SDN=https://asd1asd2.ingest.sentry.io/asd1asd2
+CRONITOR_API_KEY=asd1asd2
+```
 
 ## Security Considerations
 
-- Guidelines for handling sensitive information in configuration.
-- Encryption, masking, or protection of critical configuration values.
+Each variable that affects the behavior of the app and is not considered secret should be added to the configuration file (`config/backend-prod.yaml`).
 
-## Examples
-
-- Practical examples of common configuration scenarios.
-- Step-by-step instructions for configuring the software.
-
-## Troubleshooting
-
-- Common configuration issues and potential solutions.
-- How to diagnose misconfigurations.
-
-## References
-
-- Links to external resources, documentation, articles related to configuration.
+The variables that are considered secret should be added to the `.env` file. The `.env` file should never be committed to the repository. It should be created manually on the server.
