@@ -12,7 +12,7 @@ Prerequisites:
 Build and run:
 
 1. Make sure that you have added the `.env` file in the project root
-2. Run `docker build -t provider-insights-image . -f Dockerfile-rs`
+2. Run `docker build -t provider-insights-image . -f Dockerfile`
 3. Run `docker run -p <port>:4558 provider-insights-image`
 
 ## Environment variables
