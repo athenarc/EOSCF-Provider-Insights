@@ -10,7 +10,7 @@ The system consists of 3 main components:
 - **Tag retriever component**, responsible for retrieving tags for the onboarding service.
 - **Auto-completion component**, responsible for providing the auto-completion functionality using the results of the previous two components.
 
-![System Architecture](assets/provider_insights_architecture.png)
+![assets/provider_insights_architecture.png](assets/provider_insights_architecture.png)
 
 Concerning persistence the system uses:
 
